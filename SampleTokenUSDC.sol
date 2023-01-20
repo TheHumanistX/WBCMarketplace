@@ -6,6 +6,6 @@ import "./node_modules/@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract SampleTokenUSDC is ERC20 ("USDCFake", "USDCF") {
     function mintTwenty() public {
-        _mint(msg.sender, 20);
+        _mint(msg.sender, 20 * 10 ** 18);
     }
 }

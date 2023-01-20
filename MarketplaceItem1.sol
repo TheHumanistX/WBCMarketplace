@@ -1,19 +1,20 @@
 //SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8;
-import "./node_modules/@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "./node_modules/@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
 contract MarketplaceItem1 {
 
-AggregatorV3Interface internal priceFeed = AggregatorV3Interface(0xD4a33860578De61DBAbDc8BFdb98FD742fA7028e);
+    AggregatorV3Interface internal priceFeed = AggregatorV3Interface(0xD4a33860578De61DBAbDc8BFdb98FD742fA7028e);
+    
 
     mapping(address => bool) public hasPurchased;
     uint public price = 10 * 10 ** 18;
     address payable public owner;
 
-    IERC20 public usdcFake = IERC20(0xd9145CCE52D386f254917e481eB44e9943F39138);
-    IERC20 public usdtFake = IERC20(0xd9145CCE52D386f254917e481eB44e9943F39138);
+    IERC20 public usdcFake = IERC20(0xedF07e8dec965BF01a64B3Ab7Fe75aCa0F1a66f4);
+    IERC20 public usdtFake = IERC20(0xedF07e8dec965BF01a64B3Ab7Fe75aCa0F1a66f4);
 
     constructor () {
         owner = payable(msg.sender);
@@ -55,5 +56,15 @@ AggregatorV3Interface internal priceFeed = AggregatorV3Interface(0xD4a33860578De
         (bool success, /*Data*/) = owner.call{value: paymentAmount}("");
         require(success, "Payment not successful");
         return success;
+    }
+
+    function changeOwner(address _newOwner) public {
+        require(msg.sender == owner, "Not owner");
+        owner = payable(_newOwner);
+    }
+
+    function changePrice(uint _newPrice) public {
+        require(msg.sender == owner, "Not owner");
+        price = _newPrice;
     }
 }
